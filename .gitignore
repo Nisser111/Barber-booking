@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+
+# Build & generated
+dist/
+build/
+out/
+.next/
+dist-ssr/
+*.tsbuildinfo
+
+# NestJS / tests
+coverage/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Logs & debug
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Vercel / deploy
+.vercel
+
+# Yarn Berry (if used)
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Certificates (local)
+*.pem
+
+# Vite
+*.local

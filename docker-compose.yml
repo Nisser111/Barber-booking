@@ -1,0 +1,91 @@
+services:
+  proxy:
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    container_name: barber-proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - client-frontend
+      - admin-frontend
+      - backend-api
+    networks:
+      - barber-network
+
+  client-frontend:
+    build:
+      context: ./client-frontend
+      dockerfile: Dockerfile
+      target: development
+    container_name: barber-client
+    volumes:
+      - ./client-frontend:/app
+      - /app/node_modules
+    networks:
+      - barber-network
+
+  admin-frontend:
+    build:
+      context: ./admin-frontend
+      dockerfile: Dockerfile
+      target: development
+    container_name: barber-admin
+    volumes:
+      - ./admin-frontend:/app
+      - /app/node_modules
+    environment:
+      API_URL: http://backend-api:4000
+    networks:
+      - barber-network
+
+  backend-api:
+    build:
+      context: ./backend-api
+      dockerfile: Dockerfile
+      target: development
+    container_name: barber-backend
+    volumes:
+      - ./backend-api:/app
+      - /app/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: barber_booking
+      DB_USER: barber
+      DB_PASSWORD: barber_password
+    networks:
+      - barber-network
+
+  mysql:
+    image: mysql:8.4
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    container_name: barber-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: barber_booking
+      MYSQL_USER: barber
+      MYSQL_PASSWORD: barber_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - barber-mysql-data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ubarber", "-pbarber_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - barber-network
+
+volumes:
+  barber-mysql-data:
+
+networks:
+  barber-network:
+    driver: bridge

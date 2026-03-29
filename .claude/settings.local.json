@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(npx:*)",
+      "Bash(docker compose:*)",
+      "Bash(docker exec:*)",
+      "Bash(docker restart:*)",
+      "Bash(curl -s http://localhost/api/services)",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s \"http://localhost/api/slots?date=2026-03-30\")",
+      "Bash(curl:*)",
+      "Bash(grep -r \"serialize\\\\|transform\\\\|ClassSerializer\" /c/Codes/projects/mapmaker/backend-api/src --include=*.ts)"
+    ]
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "Say 'Claude code is awaiting for your input'"
+          }
+        ]
+      }
+    ]
+  }
+}
